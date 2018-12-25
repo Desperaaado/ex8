@@ -1,0 +1,19 @@
+root:x:0:0:root:/root:/bin/bash
+
+bin:x:1:1:bin:/bin:/sbin/nologin
+
+daemon:x:2:2:daemon:/sbin:/sbin/nologin
+
+adm:x:3:4:adm:/var/adm:/sbin/nologin
+
+lp:x:4:7:lp:/var/spool/lpd:/sbin/nologin
+周杰伦
+邓紫棋
+薛之谦
+李荣浩
+小工匠
+root     tty1         2016-08-22 06:47 (:0)
+
+root     pts/2        2016-09-20 18:18 (10.45.35.59)
+
+root     pts/0        2016-09-20 14:25 (10.45.22.82)
