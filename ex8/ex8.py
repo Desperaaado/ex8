@@ -55,40 +55,47 @@ def cut_line_to_pieces(line, divide):
     else:
         return pieces
 
-def fix_end_num(array, end_num):
-    # end_num 需要一些额外的处理以应对 index < 0 的情况
-    # 以及之后切片时可能出现的 差一错误
-    array_len = len(array)
-    num_abs = abs(end_num)
-    f_end = end_num
-
-    # index > 0
-    if end_num > 0:
-        if num_abs > (array_len - 1):
-            f_end = array_len
-        else:
-            f_end = end_num + 1 # +1 是切片需要
-    # index < 0
-    elif end_num < 0:
-        if num_abs > (array_len + 1):
-            f_end = (array_len + 1) * (-1) # +1 是切片需要
-        elif end_num == -1:
-            return None
-    # index == 0
-    elif end_num == 0 :
-        f_end = 1
+def slice_add_one(end_num):
+    # end_num 需要在切片时完成 +1 操作
+    # 特别地：当 end_num == -1 时，不作 +1 ，而是直接输出 None
+    if end_num == -1 or end_num == None:
+        return None
     else:
-        print('ERROR: Wrong Condition!(e.g: 2-7)')
-        sys.exit(1)
-    
-    return f_end
+        return end_num + 1
 
-def try_array(array, num):
-    try:
-        array[num]
-        return True
-    except IndexError:
-        return False
+def num_guarantee(array, num):
+    # 保证 num 在 array 的index范围内
+    array_len = len(array)
+    if num + 1 > array_len:
+        return 'too big'   
+    elif num < -array_len: 
+        return 'too small'
+    else:
+        return num
+
+def start_end_num_in_range(array, start_num, end_num):
+    g_start = num_guarantee(array, start_num)
+    g_end = num_guarantee(array, end_num)
+
+    if g_start == 'too big':
+        r_start = start_num # 将输出空
+    elif g_start == 'too small':
+        r_start = None # 将从第一个开始输出
+    else:
+        r_start = start_num # 正常输出
+
+    if g_end == 'too big':
+        r_end = None # 将从最后一个开始输出
+    elif g_end == 'too small':
+        r_end = end_num # 将输出空
+    else:
+        r_end = end_num # 正常输出
+
+    # if r_start and r_end and (r_start > r_end): ####
+    #     print('ERROR: start_num > end_num')
+    #     sys.exit(1)
+
+    return r_start, r_end
 
 def processing_demand(demand):
     if not ('-' in demand):
@@ -114,15 +121,10 @@ def processing_demand(demand):
     return start_num, end_num
 
 def processing_pieces(pieces, demand):
-
     print('>'*5, 'pieces: ', pieces)
     start_num, end_num = processing_demand(demand)
-    f_end_num = fix_end_num(pieces, end_num)
-
-    if start_num < 0 or start_num > len(pieces) - 1:
-        start_num = 0
-
-    processed_pieces = pieces[start_num : f_end_num]
+    r_start, r_end =  start_end_num_in_range(pieces, start_num, end_num)
+    processed_pieces = pieces[r_start : slice_add_one(r_end)]
     
     for stuff in processed_pieces:
         print(stuff, end='')
