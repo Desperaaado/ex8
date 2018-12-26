@@ -67,7 +67,6 @@ def processing_demand(demand):
         sys.exit(1)
 
     demand_list = demand.split('-')
-    print('demand_list: ', demand_list)
     demand_start = demand_list[0]
     demand_end = demand_list[1]
 
@@ -95,7 +94,6 @@ def processing_pieces(pieces, demand):
 
     processed_pieces = pieces[start_num : end_num]
     print('result: ', end='')
-    print('end_num: ', end_num)
 
     for stuff in processed_pieces:
         print(stuff, end='')
